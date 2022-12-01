@@ -1,0 +1,30 @@
+{
+  "name": "react-slides",
+  "version": "1.0.0",
+  "description": "React slideshow library",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "yarn parcel examples/basic/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ville Heikkinen <ville.heikkinen@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "17",
+    "@types/react-dom": "^17",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/tinycolor": "^1.1.27",
+    "parcel": "^2.7.0",
+    "react": "17",
+    "react-dom": "17",
+    "react-router-dom": "^6.4.0",
+    "styled-components": "^5.3.5",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  },
+  "alias": {
+    "react-slideshow": "./src/index"
+  }
+}
