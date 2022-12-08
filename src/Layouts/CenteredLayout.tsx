@@ -1,5 +1,5 @@
 import React from "react";
-import { DefaultLayout, LayoutProps } from "./Default";
+import { DefaultLayout, LayoutProps } from "./DefaultLayout";
 
 export type CenteredLayoutProps = LayoutProps;
 
