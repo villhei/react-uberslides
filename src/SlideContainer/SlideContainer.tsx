@@ -1,7 +1,6 @@
 import React from "react";
 
 export type SlideProps = React.PropsWithChildren<{
-  backgroundColor?: string;
   width: string;
   height: string;
 }>;

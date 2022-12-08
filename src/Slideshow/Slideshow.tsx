@@ -150,7 +150,24 @@ export const Slideshow = (props: SlideShowProps) => {
       return;
     }
     if (fullScreen) {
-      scaledWrapper.current.requestFullscreen({ navigationUI: "show" });
+      scaledWrapper.current.style.opacity = "0";
+      scaledWrapper.current
+        .requestFullscreen({ navigationUI: "show" })
+        .then(() => {
+          scaledWrapper.current!.animate(
+            [
+              { opacity: 0, offset: 0 },
+              { opacity: 0, offset: 0.4 },
+              { opacity: 1, offset: 1.0 },
+            ],
+            {
+              iterations: 1,
+              easing: "ease-in-out",
+              duration: timings.slowest,
+              fill: "forwards",
+            }
+          );
+        });
     }
     if (onExitFullScreen) {
       scaledWrapper.current.addEventListener("fullscreenchange", (event) => {
