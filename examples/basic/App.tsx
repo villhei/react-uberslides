@@ -33,7 +33,7 @@ const SlideView = () => {
     <div
       style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}
     >
-      <div>
+      <div style={{ marginBottom: "16px" }}>
         <button
           onClick={(event) => {
             event.preventDefault();
@@ -54,7 +54,7 @@ const SlideView = () => {
         <Slideshow
           width={1920}
           height={1080}
-          slides={slides}
+          slides={[]}
           slideNumber={slideNumber}
           onRequestSlide={changeSlide}
           fullScreen={fullscreen}

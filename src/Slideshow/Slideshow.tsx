@@ -1,9 +1,8 @@
-import React, { createRef, useEffect, useMemo, useState } from "react";
+import React, { createRef, useEffect, useMemo } from "react";
 import { useCallback } from "react";
-
-import { useNavigate } from "react-router-dom";
 import { SlideContainer } from "../SlideContainer/SlideContainer";
 import { timings } from "../constants";
+import DummySlide from "./DummySlide";
 
 const processKey = (event: KeyboardEvent, slideNumber: number) => {
   switch (event.key) {
@@ -19,8 +18,8 @@ const processKey = (event: KeyboardEvent, slideNumber: number) => {
   }
 };
 
-type SlideShowProps = {
-  slides: React.FC[];
+export type SlideshowProps = {
+  slides: React.FC<{ slideNumber?: number }>[];
   width?: number;
   height?: number;
   slideNumber?: number;
@@ -29,7 +28,7 @@ type SlideShowProps = {
   onExitFullScreen?: () => void;
 };
 
-export const Slideshow = (props: SlideShowProps) => {
+export const Slideshow = (props: SlideshowProps) => {
   const {
     slides,
     slideNumber = 0,
@@ -40,23 +39,20 @@ export const Slideshow = (props: SlideShowProps) => {
     onExitFullScreen,
   } = props;
 
-  const navigate = useNavigate();
-
   const scaledWrapper = createRef<HTMLDivElement>();
   const scaledContent = createRef<HTMLDivElement>();
   const activeSlideRef = createRef<HTMLDivElement>();
 
   const ActiveSlide = useMemo(
     () => () => {
-      const SlideContent = slides[slideNumber];
-      return <SlideContent />;
+      const SlideContent = slides[slideNumber] || DummySlide;
+      return <SlideContent slideNumber={slideNumber} />;
     },
     [slides, slideNumber]
   );
 
   const nextSlide = useCallback(
     (event: KeyboardEvent) => {
-      console.log({ activeSlideRef });
       const { current } = activeSlideRef;
       if (!current || event.defaultPrevented) {
         return;
@@ -91,7 +87,7 @@ export const Slideshow = (props: SlideShowProps) => {
         }
       });
     },
-    [slideNumber, navigate, activeSlideRef]
+    [slideNumber, activeSlideRef]
   );
 
   useEffect(() => {
@@ -183,6 +179,8 @@ export const Slideshow = (props: SlideShowProps) => {
 
   return (
     <div
+      tabIndex={0}
+      role="document"
       style={{
         display: "flex",
         width: "100%",

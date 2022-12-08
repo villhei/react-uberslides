@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "yarn parcel examples/basic/index.html",
-    "test": "jest src/**/*.test.ts"
+    "test": "jest ./src/**/*.spec.ts"
   },
   "author": "Ville Heikkinen <ville.heikkinen@gmail.com>",
   "license": "ISC",
@@ -22,9 +22,12 @@
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.3",
     "jest": "^29.3.1",
     "jest-cli": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "jsdom-testing-mocks": "^1.6.0",
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3"
   },
