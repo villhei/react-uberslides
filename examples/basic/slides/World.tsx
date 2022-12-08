@@ -1,16 +1,16 @@
 import React from "react";
 import { DefaultLayout } from "react-slideshow";
 
-const ThirdSlide: React.FC = () => (
+const World: React.FC = () => (
   <DefaultLayout
     style={{
-      fontSize: "100px",
+      fontSize: "6em",
       backgroundColor: "green",
     }}
   >
     <h1>World!</h1>
-    <h1>World!</h1>
+    World!
   </DefaultLayout>
 );
 
-export default ThirdSlide;
+export default World;

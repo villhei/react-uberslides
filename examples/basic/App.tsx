@@ -10,9 +10,11 @@ import {
 import TestSlide from "./slides/TestSlide";
 import Hello from "./slides/Hello";
 import World from "./slides/World";
+import Monospace from "./slides/Monospace";
+
 import "./style.css";
 
-const slides = [Hello, World, TestSlide];
+const slides = [Hello, World, Monospace, TestSlide];
 
 const SlideView = () => {
   const { slideID = "0" } = useParams();
@@ -28,24 +30,37 @@ const SlideView = () => {
   const [fullscreen, toggleFullScreen, setFullscreen] = useToggle();
 
   return (
-    <div style={{ overflow: "hidden" }}>
-      <button
-        onClick={(event) => {
-          event.preventDefault();
-          toggleFullScreen();
+    <div
+      style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}
+    >
+      <div>
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            toggleFullScreen();
+          }}
+        >
+          Toggle fullscreen
+        </button>
+      </div>
+      <div
+        style={{
+          flex: 1,
+          overflow: "hidden",
+          border: "2px solid black",
+          backgroundColor: "black",
         }}
       >
-        Toggle fullscreen
-      </button>
-      <Slideshow
-        width={1920}
-        height={1080}
-        slides={slides}
-        slideNumber={slideNumber}
-        onRequestSlide={changeSlide}
-        fullScreen={fullscreen}
-        onExitFullScreen={() => setFullscreen(false)}
-      />
+        <Slideshow
+          width={1920}
+          height={1080}
+          slides={slides}
+          slideNumber={slideNumber}
+          onRequestSlide={changeSlide}
+          fullScreen={fullscreen}
+          onExitFullScreen={() => setFullscreen(false)}
+        />
+      </div>
     </div>
   );
 };
