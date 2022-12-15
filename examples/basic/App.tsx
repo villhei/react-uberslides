@@ -1,6 +1,6 @@
 import { Slideshow, useToggle } from "react-slideshow";
 import {
-  createBrowserRouter,
+  createHashRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
@@ -64,7 +64,7 @@ const SlideView = () => {
     </div>
   );
 };
-const router = createBrowserRouter(
+const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<SlideView />}>
       <Route path="/:slideID" element={<SlideView />} />
