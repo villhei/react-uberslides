@@ -54,7 +54,7 @@ const SlideView = () => {
         <Slideshow
           width={1920}
           height={1080}
-          slides={[]}
+          slides={slides}
           slideNumber={slideNumber}
           onRequestSlide={changeSlide}
           fullscreen={fullscreen}

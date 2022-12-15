@@ -2,9 +2,10 @@
   "name": "react-slides",
   "version": "1.0.0",
   "description": "React slideshow library",
-  "main": "index.js",
   "scripts": {
+    "postinstall": "cp scripts/pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'Git hooks set'",
     "start:dev": "yarn parcel examples/basic/index.html",
+    "build:demo": "yarn parcel build examples/basic/index.html --dist-dir docs",
     "test": "jest ./src/**/*.spec.ts"
   },
   "author": "Ville Heikkinen <ville.heikkinen@gmail.com>",
