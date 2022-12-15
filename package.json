@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "cp scripts/pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'Git hooks set'",
     "start:dev": "yarn parcel examples/basic/index.html",
-    "build:demo": "yarn parcel build examples/basic/index.html --dist-dir docs --public-url react-slides",
+    "build:demo": "yarn parcel build examples/basic/index.html --dist-dir docs --public-url \"/react-slides\"",
     "test": "jest ./src/**/*.spec.ts"
   },
   "author": "Ville Heikkinen <ville.heikkinen@gmail.com>",
