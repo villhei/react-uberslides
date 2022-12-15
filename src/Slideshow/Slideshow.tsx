@@ -24,8 +24,8 @@ export type SlideshowProps = {
   height?: number;
   slideNumber?: number;
   onRequestSlide: (nextSlideNumber: number) => void;
-  fullScreen?: boolean;
-  onExitFullScreen?: () => void;
+  fullscreen?: boolean;
+  onExitFullscreen?: () => void;
 };
 
 export const Slideshow = (props: SlideshowProps) => {
@@ -35,8 +35,8 @@ export const Slideshow = (props: SlideshowProps) => {
     onRequestSlide,
     width = 1920,
     height = 1080,
-    fullScreen = false,
-    onExitFullScreen,
+    fullscreen = false,
+    onExitFullscreen,
   } = props;
 
   const scaledWrapper = createRef<HTMLDivElement>();
@@ -57,6 +57,8 @@ export const Slideshow = (props: SlideshowProps) => {
       if (!current || event.defaultPrevented) {
         return;
       }
+
+      event.preventDefault();
 
       const nextSlideNumber = processKey(event, slideNumber);
 
@@ -91,12 +93,20 @@ export const Slideshow = (props: SlideshowProps) => {
   );
 
   useEffect(() => {
-    document.addEventListener("keyup", nextSlide);
+    if (fullscreen) {
+      document.addEventListener("keyup", nextSlide);
+    } else if (scaledWrapper.current) {
+      scaledWrapper.current.addEventListener("keyup", nextSlide);
+    }
 
     return () => {
-      document.removeEventListener("keyup", nextSlide);
+      if (fullscreen) {
+        document.addEventListener("keyup", nextSlide);
+      } else if (scaledWrapper.current) {
+        scaledWrapper.current.removeEventListener("keyup", nextSlide);
+      }
     };
-  }, [nextSlide]);
+  }, [fullscreen, scaledWrapper, nextSlide]);
 
   useEffect(() => {
     const { current } = activeSlideRef;
@@ -145,7 +155,7 @@ export const Slideshow = (props: SlideshowProps) => {
     if (!scaledWrapper.current) {
       return;
     }
-    if (fullScreen) {
+    if (fullscreen) {
       scaledWrapper.current.style.opacity = "0";
       scaledWrapper.current
         .requestFullscreen({ navigationUI: "show" })
@@ -164,22 +174,25 @@ export const Slideshow = (props: SlideshowProps) => {
             }
           );
         });
+
+      if (onExitFullscreen) {
+        const listener = (_event: Event) => {
+          if (!document.fullscreenElement) {
+            onExitFullscreen();
+            document.removeEventListener("fullscreenchange", listener);
+          }
+        };
+        document.addEventListener("fullscreenchange", listener);
+      }
     }
-    if (onExitFullScreen) {
-      scaledWrapper.current.addEventListener("fullscreenchange", (event) => {
-        if (document.fullscreenElement) {
-          onExitFullScreen();
-        }
-      });
-    }
-  }, [fullScreen, onExitFullScreen, nextSlide]);
+  }, [fullscreen, onExitFullscreen, nextSlide]);
 
   const pixelWidth = `${width}px`;
   const pixelHeight = `${height}px`;
 
   return (
     <div
-      tabIndex={0}
+      tabIndex={fullscreen ? undefined : 0}
       role="document"
       style={{
         display: "flex",

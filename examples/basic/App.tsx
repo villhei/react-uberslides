@@ -57,8 +57,8 @@ const SlideView = () => {
           slides={[]}
           slideNumber={slideNumber}
           onRequestSlide={changeSlide}
-          fullScreen={fullscreen}
-          onExitFullScreen={() => setFullscreen(false)}
+          fullscreen={fullscreen}
+          onExitFullscreen={() => setFullscreen(false)}
         />
       </div>
     </div>
