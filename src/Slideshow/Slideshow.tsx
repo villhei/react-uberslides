@@ -1,8 +1,8 @@
-import React, { createRef, useEffect, useMemo } from "react";
+import React, { createRef, useEffect, useMemo, useRef } from "react";
 import { useCallback } from "react";
-import { SlideContainer } from "../SlideContainer/SlideContainer";
 import { timings } from "../constants";
 import DummySlide from "./DummySlide";
+import "./Slideshow.css";
 
 const processKey = (event: KeyboardEvent, slideNumber: number) => {
   switch (event.key) {
@@ -35,13 +35,15 @@ export const Slideshow = (props: SlideshowProps) => {
     onRequestSlide,
     width = 1920,
     height = 1080,
-    fullscreen = false,
+    fullscreen: fullscreenProp = false,
     onExitFullscreen,
   } = props;
 
   const scaledWrapper = createRef<HTMLDivElement>();
   const scaledContent = createRef<HTMLDivElement>();
   const activeSlideRef = createRef<HTMLDivElement>();
+
+  const isFullscreenRef = useRef<boolean>(fullscreenProp);
 
   const ActiveSlide = useMemo(
     () => () => {
@@ -51,7 +53,7 @@ export const Slideshow = (props: SlideshowProps) => {
     [slides, slideNumber]
   );
 
-  const nextSlide = useCallback(
+  const handleInput = useCallback(
     (event: KeyboardEvent) => {
       const { current } = activeSlideRef;
       if (!current || event.defaultPrevented) {
@@ -75,6 +77,7 @@ export const Slideshow = (props: SlideshowProps) => {
         ],
         {
           iterations: 1,
+          easing: "ease-in-out",
           duration: timings.default,
           fill: "forwards",
         }
@@ -93,20 +96,20 @@ export const Slideshow = (props: SlideshowProps) => {
   );
 
   useEffect(() => {
-    if (fullscreen) {
-      document.addEventListener("keyup", nextSlide);
+    if (fullscreenProp) {
+      document.addEventListener("keyup", handleInput);
     } else if (scaledWrapper.current) {
-      scaledWrapper.current.addEventListener("keyup", nextSlide);
+      scaledWrapper.current.addEventListener("keyup", handleInput);
     }
 
     return () => {
-      if (fullscreen) {
-        document.addEventListener("keyup", nextSlide);
+      if (fullscreenProp) {
+        document.addEventListener("keyup", handleInput);
       } else if (scaledWrapper.current) {
-        scaledWrapper.current.removeEventListener("keyup", nextSlide);
+        scaledWrapper.current.removeEventListener("keyup", handleInput);
       }
     };
-  }, [fullscreen, scaledWrapper, nextSlide]);
+  }, [fullscreenProp, scaledWrapper, handleInput]);
 
   useEffect(() => {
     const { current } = activeSlideRef;
@@ -122,6 +125,7 @@ export const Slideshow = (props: SlideshowProps) => {
       ],
       {
         iterations: 1,
+        easing: "ease-in-out",
         duration: timings.default,
         fill: "forwards",
       }
@@ -155,7 +159,7 @@ export const Slideshow = (props: SlideshowProps) => {
     if (!scaledWrapper.current) {
       return;
     }
-    if (fullscreen) {
+    if (fullscreenProp && !isFullscreenRef.current) {
       scaledWrapper.current.style.opacity = "0";
       scaledWrapper.current
         .requestFullscreen({ navigationUI: "show" })
@@ -173,63 +177,51 @@ export const Slideshow = (props: SlideshowProps) => {
               fill: "forwards",
             }
           );
+          isFullscreenRef.current = true;
         });
 
-      if (onExitFullscreen) {
-        const listener = (_event: Event) => {
-          if (!document.fullscreenElement) {
+      const listener = (_event: Event) => {
+        if (!document.fullscreenElement) {
+          isFullscreenRef.current = false;
+          if (onExitFullscreen) {
             onExitFullscreen();
-            document.removeEventListener("fullscreenchange", listener);
           }
-        };
-        document.addEventListener("fullscreenchange", listener);
-      }
+          document.removeEventListener("fullscreenchange", listener);
+        }
+      };
+      document.addEventListener("fullscreenchange", listener);
     }
-  }, [fullscreen, onExitFullscreen, nextSlide]);
+  }, [isFullscreenRef, fullscreenProp, onExitFullscreen, handleInput]);
 
   const pixelWidth = `${width}px`;
   const pixelHeight = `${height}px`;
 
   return (
     <div
-      tabIndex={fullscreen ? undefined : 0}
+      tabIndex={fullscreenProp ? undefined : 0}
       role="document"
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        overflow: "hidden",
-        zIndex: 1,
-        backgroundColor: "black",
-      }}
+      className="react-slideshow-main-container"
       ref={scaledWrapper}
     >
-      <div
-        style={{
-          display: "flex",
-          flex: "1 1",
-          overflow: "hidden",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: -1,
-        }}
-      >
+      <div className="react-slideshow-content-aligner">
         <div
           ref={scaledContent}
+          className="react-slideshow-content-container"
           style={{
             width: pixelWidth,
             height: pixelHeight,
-            backgroundColor: "black",
           }}
         >
-          <SlideContainer
+          <div
+            className="react-slideshow-slide"
+            style={{
+              width,
+              height,
+            }}
             ref={activeSlideRef}
-            width={pixelWidth}
-            height={pixelHeight}
           >
             <ActiveSlide />
-          </SlideContainer>
+          </div>
         </div>
       </div>
     </div>
