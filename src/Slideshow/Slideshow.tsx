@@ -1,5 +1,6 @@
 import React, { createRef, useEffect, useMemo, useRef } from "react";
 import { useCallback } from "react";
+import { useSlideNavigation } from "../utils/useSlideNavigation";
 import { timings } from "../constants";
 import DummySlide from "./DummySlide";
 import "./Slideshow.css";
@@ -95,21 +96,7 @@ export const Slideshow = (props: SlideshowProps) => {
     [slideNumber, activeSlideRef]
   );
 
-  useEffect(() => {
-    if (fullscreenProp) {
-      document.addEventListener("keyup", handleInput);
-    } else if (scaledWrapper.current) {
-      scaledWrapper.current.addEventListener("keyup", handleInput);
-    }
-
-    return () => {
-      if (fullscreenProp) {
-        document.addEventListener("keyup", handleInput);
-      } else if (scaledWrapper.current) {
-        scaledWrapper.current.removeEventListener("keyup", handleInput);
-      }
-    };
-  }, [fullscreenProp, scaledWrapper, handleInput]);
+  useSlideNavigation(scaledWrapper, fullscreenProp, handleInput);
 
   useEffect(() => {
     const { current } = activeSlideRef;
