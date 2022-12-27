@@ -1,23 +1,9 @@
 import React, { createRef, useEffect, useMemo, useRef } from "react";
 import { useCallback } from "react";
-import { useSlideNavigation } from "../utils/useSlideNavigation";
+import { SlideAction, useSlideNavigation } from "../utils/useSlideNavigation";
 import { timings } from "../constants";
 import DummySlide from "./DummySlide";
 import "./Slideshow.css";
-
-const processKey = (event: KeyboardEvent, slideNumber: number) => {
-  switch (event.key) {
-    case "ArrowLeft": {
-      return slideNumber - 1;
-    }
-    case "ArrowRight": {
-      return slideNumber + 1;
-    }
-    default: {
-      return null;
-    }
-  }
-};
 
 export type SlideshowProps = {
   slides: React.FC<{ slideNumber?: number }>[];
@@ -54,20 +40,15 @@ export const Slideshow = (props: SlideshowProps) => {
     [slides, slideNumber]
   );
 
-  const handleInput = useCallback(
-    (event: KeyboardEvent) => {
+  const handleSlideCommands = useCallback(
+    (action: SlideAction) => {
       const { current } = activeSlideRef;
-      if (!current || event.defaultPrevented) {
+      if (!current) {
         return;
       }
 
-      event.preventDefault();
-
-      const nextSlideNumber = processKey(event, slideNumber);
-
-      if (nextSlideNumber === null) {
-        return;
-      }
+      const nextSlideNumber =
+        action === SlideAction.NEXT_SLIDE ? slideNumber + 1 : slideNumber - 1;
 
       const animation = current.animate(
         [
@@ -96,7 +77,7 @@ export const Slideshow = (props: SlideshowProps) => {
     [slideNumber, activeSlideRef]
   );
 
-  useSlideNavigation(scaledWrapper, fullscreenProp, handleInput);
+  useSlideNavigation(scaledWrapper, fullscreenProp, handleSlideCommands);
 
   useEffect(() => {
     const { current } = activeSlideRef;
@@ -178,7 +159,7 @@ export const Slideshow = (props: SlideshowProps) => {
       };
       document.addEventListener("fullscreenchange", listener);
     }
-  }, [isFullscreenRef, fullscreenProp, onExitFullscreen, handleInput]);
+  }, [isFullscreenRef, fullscreenProp, onExitFullscreen]);
 
   const pixelWidth = `${width}px`;
   const pixelHeight = `${height}px`;
