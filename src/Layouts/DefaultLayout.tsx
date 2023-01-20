@@ -24,6 +24,7 @@ export const DefaultLayout = (props: LayoutProps) => {
         display: flex ? "flex" : undefined,
         width,
         height,
+        overflow: "hidden",
         backgroundColor,
         ...style,
       }}
