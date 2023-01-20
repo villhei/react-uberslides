@@ -1,0 +1,9 @@
+.react-slideshow-layout-centered > * {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.react-slideshow-layout-centered {
+    justify-items: space-evenly;
+    text-align: center;
+}

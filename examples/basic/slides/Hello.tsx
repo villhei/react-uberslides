@@ -1,15 +1,20 @@
 import React from "react";
-import { CenteredLayout } from "react-slideshow";
+import { Animate, CenteredLayout, animations } from "react-slideshow";
 
 const OtherSlide: React.FC = () => (
   <CenteredLayout
     style={{
-      fontSize: "100px",
+      fontSize: "1.5em",
       color: "white",
       backgroundColor: "black",
     }}
   >
     <h1>Hello!</h1>
+    <Animate animation={animations.fallIn}>
+      <div style={{ opacity: 0 }}>
+        <h3>Use the arrows or swipe to navigate</h3>
+      </div>
+    </Animate>
   </CenteredLayout>
 );
 

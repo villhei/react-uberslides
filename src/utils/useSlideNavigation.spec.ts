@@ -1,5 +1,8 @@
 import { act, fireEvent, renderHook } from "@testing-library/react";
-import { SlideAction, useSlideNavigation } from "./useSlideNavigation";
+import {
+  SlideNavigationAction,
+  useSlideNavigation,
+} from "./useSlideNavigation";
 
 const mockDiv = document.createElement("div");
 
@@ -24,7 +27,7 @@ it("should call event handler with PREV_SLIDE on arrow left", () => {
     key: "ArrowLeft",
   });
 
-  expect(handler).toHaveBeenCalledWith(SlideAction.PREV_SLIDE);
+  expect(handler).toHaveBeenCalledWith(SlideNavigationAction.PREV_SLIDE);
 });
 
 it("should call event handler with NEXT_SLIDE on arrow right", () => {
@@ -36,7 +39,7 @@ it("should call event handler with NEXT_SLIDE on arrow right", () => {
     key: "ArrowRight",
   });
 
-  expect(handler).toHaveBeenCalledWith(SlideAction.NEXT_SLIDE);
+  expect(handler).toHaveBeenCalledWith(SlideNavigationAction.NEXT_SLIDE);
 });
 
 it("should call event handler with NEXT_SLIDE on swipe left", () => {
@@ -58,7 +61,7 @@ it("should call event handler with NEXT_SLIDE on swipe left", () => {
       })
     );
   });
-  expect(handler).toHaveBeenCalledWith(SlideAction.NEXT_SLIDE);
+  expect(handler).toHaveBeenCalledWith(SlideNavigationAction.NEXT_SLIDE);
 });
 
 it("should call event handler with PREV_SLIDE on swipe right", () => {
@@ -80,5 +83,5 @@ it("should call event handler with PREV_SLIDE on swipe right", () => {
       })
     );
   });
-  expect(handler).toHaveBeenCalledWith(SlideAction.PREV_SLIDE);
+  expect(handler).toHaveBeenCalledWith(SlideNavigationAction.PREV_SLIDE);
 });

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-export enum SlideAction {
+export enum SlideNavigationAction {
   NEXT_SLIDE,
   PREV_SLIDE,
 }
@@ -8,10 +8,10 @@ export enum SlideAction {
 const interpretCommand = (event: KeyboardEvent) => {
   switch (event.key) {
     case "ArrowLeft": {
-      return SlideAction.PREV_SLIDE;
+      return SlideNavigationAction.PREV_SLIDE;
     }
     case "ArrowRight": {
-      return SlideAction.NEXT_SLIDE;
+      return SlideNavigationAction.NEXT_SLIDE;
     }
     default: {
       return null;
@@ -27,7 +27,7 @@ type TouchCoord = {
 export function useSlideNavigation(
   containerElementRef: React.MutableRefObject<HTMLDivElement | null>,
   isFullscreen: boolean,
-  actionHandler: (action: SlideAction) => void
+  actionHandler: (action: SlideNavigationAction) => void
 ) {
   const touchRef = useRef<TouchCoord>({
     x: null,
@@ -52,10 +52,10 @@ export function useSlideNavigation(
     const handleTouchEnd = (event: TouchEvent) => {
       const { screenX: touchendX } = event.changedTouches[0];
       if (touchRef.current.x !== null && touchendX < touchRef.current.x) {
-        actionHandler(SlideAction.NEXT_SLIDE);
+        actionHandler(SlideNavigationAction.NEXT_SLIDE);
       }
       if (touchRef.current.x !== null && touchendX > touchRef.current.x) {
-        actionHandler(SlideAction.PREV_SLIDE);
+        actionHandler(SlideNavigationAction.PREV_SLIDE);
       }
     };
 

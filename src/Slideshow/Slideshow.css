@@ -19,6 +19,7 @@
 
 .react-slideshow-content-container {
     background-color: black;
+    overflow: hidden;
 }
 
 .react-slideshow-slide {

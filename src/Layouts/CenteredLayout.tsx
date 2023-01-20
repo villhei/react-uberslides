@@ -1,20 +1,22 @@
 import React from "react";
 import { DefaultLayout, LayoutProps } from "./DefaultLayout";
+import "./Layout.css";
 
 export type CenteredLayoutProps = LayoutProps;
 
 export const CenteredLayout = (props: CenteredLayoutProps) => {
-  const { style = {}, ...rest } = props;
+  const { style = {}, className, ...rest } = props;
 
   return (
     <DefaultLayout
       style={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         flexDirection: "column",
         ...style,
       }}
+      className="react-slideshow-layout-centered"
       {...rest}
     />
   );

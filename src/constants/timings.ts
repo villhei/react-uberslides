@@ -1,4 +1,4 @@
-const DEFAULT_TIMING = 300;
+const DEFAULT_TIMING = 500;
 
 export const timings = {
   slowest: DEFAULT_TIMING * 3,

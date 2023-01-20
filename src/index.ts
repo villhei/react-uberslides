@@ -1,3 +1,4 @@
+export * from "./Animations";
 export * from "./constants";
 export * from "./Slideshow/Slideshow";
 export * from "./Layouts";

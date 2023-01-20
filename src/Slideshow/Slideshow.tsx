@@ -1,9 +1,16 @@
-import React, { createRef, useEffect, useMemo, useRef } from "react";
+import React, { createRef, useEffect, useMemo, useRef, useState } from "react";
 import { useCallback } from "react";
-import { SlideAction, useSlideNavigation } from "../utils/useSlideNavigation";
-import { timings } from "../constants";
+import {
+  SlideNavigationAction,
+  useSlideNavigation,
+} from "../utils/useSlideNavigation";
+import { slideTransitions } from "../constants";
 import DummySlide from "./DummySlide";
 import "./Slideshow.css";
+import { animationConfigs } from "../constants/animationConfigs";
+import { resolveNextSlide } from "../utils/resolveNextSlide";
+
+export type SlideTransitionStyle = "fade" | "slide";
 
 export type SlideshowProps = {
   slides: React.FC<{ slideNumber?: number }>[];
@@ -13,6 +20,41 @@ export type SlideshowProps = {
   onRequestSlide: (nextSlideNumber: number) => void;
   fullscreen?: boolean;
   onExitFullscreen?: () => void;
+  transitionStyle?: SlideTransitionStyle;
+};
+
+const chooseSlideEnterAnimation = (
+  transitionStyle: SlideTransitionStyle,
+  action: SlideNavigationAction | null
+) => {
+  if (transitionStyle === "slide") {
+    if (action === SlideNavigationAction.NEXT_SLIDE) {
+      return slideTransitions.slideFromRight;
+    }
+    if (action === SlideNavigationAction.PREV_SLIDE) {
+      return slideTransitions.slideFromLeft;
+    }
+  }
+  return slideTransitions.fadeIn;
+};
+
+type SlideAnimation = {
+  style: Keyframe[];
+  options: KeyframeAnimationOptions;
+};
+const chooseSlideExitAnimation = (
+  transitionStyle: SlideTransitionStyle,
+  action: SlideNavigationAction
+) => {
+  if (transitionStyle === "slide") {
+    if (action === SlideNavigationAction.NEXT_SLIDE) {
+      return slideTransitions.slideLeft;
+    }
+    if (action === SlideNavigationAction.PREV_SLIDE) {
+      return slideTransitions.slideRight;
+    }
+  }
+  return slideTransitions.fadeOut;
 };
 
 export const Slideshow = (props: SlideshowProps) => {
@@ -24,11 +66,18 @@ export const Slideshow = (props: SlideshowProps) => {
     height = 1080,
     fullscreen: fullscreenProp = false,
     onExitFullscreen,
+    transitionStyle = "fade",
   } = props;
 
   const scaledWrapper = createRef<HTMLDivElement>();
   const scaledContent = createRef<HTMLDivElement>();
   const activeSlideRef = createRef<HTMLDivElement>();
+  const previousSlideNumber = useRef<number>();
+  const [slideEnterAnimation, setSlideEnterAnimation] =
+    useState<SlideAnimation>({
+      style: slideTransitions.fadeIn,
+      options: animationConfigs.animateOnce,
+    });
 
   const isFullscreenRef = useRef<boolean>(fullscreenProp);
 
@@ -41,40 +90,41 @@ export const Slideshow = (props: SlideshowProps) => {
   );
 
   const handleSlideCommands = useCallback(
-    (action: SlideAction) => {
+    (action: SlideNavigationAction) => {
       const { current } = activeSlideRef;
       if (!current) {
         return;
       }
 
-      const nextSlideNumber =
-        action === SlideAction.NEXT_SLIDE ? slideNumber + 1 : slideNumber - 1;
+      const exitAnimationStyle = chooseSlideExitAnimation(
+        transitionStyle,
+        action
+      );
 
       const animation = current.animate(
-        [
-          { opacity: 1, offset: 0.0 },
-          { opacity: 1, offset: 0.2 },
-          { opacity: 0, offset: 0.8 },
-          { opacity: 0, offset: 1.0 },
-        ],
-        {
-          iterations: 1,
-          easing: "ease-in-out",
-          duration: timings.default,
-          fill: "forwards",
-        }
+        exitAnimationStyle,
+        animationConfigs.animateOnce
+      );
+      const nextSlideNumber = resolveNextSlide(
+        slides.length,
+        slideNumber,
+        action
       );
       animation.addEventListener("finish", () => {
-        if (nextSlideNumber === slides.length) {
-          onRequestSlide(0);
-        } else if (nextSlideNumber === -1) {
-          onRequestSlide(slides.length - 1);
-        } else {
-          onRequestSlide(nextSlideNumber);
-        }
+        previousSlideNumber.current = slideNumber;
+        const enterAnimationStyle = chooseSlideEnterAnimation(
+          transitionStyle,
+          action
+        );
+
+        setSlideEnterAnimation({
+          style: enterAnimationStyle,
+          options: animationConfigs.animateOnce,
+        });
+        onRequestSlide(nextSlideNumber);
       });
     },
-    [slideNumber, activeSlideRef]
+    [slideNumber, activeSlideRef, setSlideEnterAnimation, transitionStyle]
   );
 
   useSlideNavigation(scaledWrapper, fullscreenProp, handleSlideCommands);
@@ -84,21 +134,9 @@ export const Slideshow = (props: SlideshowProps) => {
     if (!current) {
       return;
     }
-    current.animate(
-      [
-        { opacity: 0, offset: 0 },
-        { opacity: 0, offset: 0.2 },
-        { opacity: 1, offset: 0.8 },
-        { opacity: 1, offset: 1.0 },
-      ],
-      {
-        iterations: 1,
-        easing: "ease-in-out",
-        duration: timings.default,
-        fill: "forwards",
-      }
-    );
-  }, [activeSlideRef, slideNumber]);
+    const { style, options } = slideEnterAnimation;
+    current.animate(style, options);
+  }, [activeSlideRef, slideEnterAnimation]);
 
   useEffect(() => {
     const listener = () => {
@@ -133,17 +171,8 @@ export const Slideshow = (props: SlideshowProps) => {
         .requestFullscreen({ navigationUI: "show" })
         .then(() => {
           scaledWrapper.current!.animate(
-            [
-              { opacity: 0, offset: 0 },
-              { opacity: 0, offset: 0.4 },
-              { opacity: 1, offset: 1.0 },
-            ],
-            {
-              iterations: 1,
-              easing: "ease-in-out",
-              duration: timings.slowest,
-              fill: "forwards",
-            }
+            slideTransitions.fadeIn,
+            animationConfigs.animateOnceSlowly
           );
           isFullscreenRef.current = true;
         });
