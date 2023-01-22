@@ -1,5 +1,32 @@
 import React from "react";
-import { DefaultLayout, Animate, timings } from "react-slideshow";
+import {
+  DefaultLayout,
+  Animate,
+  timings,
+  ReactSlidesAnimation,
+} from "react-slideshow";
+
+const backgroundExtend: ReactSlidesAnimation = {
+  initialStyles: {
+    color: "black",
+    backgroundColor: "white",
+    padding: "0em 4em",
+  },
+  keyframes: [
+    {
+      offset: 0,
+      color: "black",
+      backgroundColor: "white",
+      padding: "0em 4em",
+    },
+    {
+      offset: 1,
+      color: "white",
+      backgroundColor: "black",
+      padding: "1.5em 4em",
+    },
+  ],
+};
 
 const Introduction: React.FC = () => {
   return (
@@ -8,41 +35,37 @@ const Introduction: React.FC = () => {
         padding: "0em 2em",
       }}
     >
-      <Animate
-        animation={[
-          {
-            offset: 0,
-            color: "black",
-            backgroundColor: "white",
-            padding: "0em 2em",
-          },
-          {
-            offset: 1,
-            color: "white",
-            backgroundColor: "black",
-            padding: "1.5em 2em",
-          },
-        ]}
-        delay={timings.slower}
-      >
+      <Animate name="background-transition" animation={backgroundExtend}>
         <div
           style={{
-            width: "calc(100% + 1em)",
+            width: "calc(100% + 2em)",
             marginLeft: "-3em",
-            backgroundColor: "white",
-            padding: "0em 2em",
+            color: "white",
+            backgroundColor: "black",
+            padding: "1.5em 4em",
           }}
         >
           <h1>
             This is a slideshow
-            <Animate delay={timings.default * 3}>
-              <span style={{ opacity: 0 }}> 🚀</span>
+            <Animate
+              delay={timings.default}
+              startOn={{
+                name: "background-transition",
+                event: "finished",
+              }}
+            >
+              <span> 🚀</span>
             </Animate>
           </h1>
         </div>
       </Animate>
-      <Animate delay={timings.default + timings.slower}>
-        <ul style={{ opacity: 0 }}>
+      <Animate
+        startOn={{
+          name: "background-transition",
+          event: "finished",
+        }}
+      >
+        <ul>
           <li>
             <pre style={{ display: "inline-block", margin: 0, color: "red" }}>
               react-slides

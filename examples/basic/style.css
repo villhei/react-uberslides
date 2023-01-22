@@ -19,3 +19,21 @@ body {
   display: flex;
   overflow: hidden;
 }
+
+.slide-preview {
+  width: 192px;
+  height: 108px;
+  min-width: 192px;
+  min-height: 108px;
+  border: 2px solid black;
+  overflow: hidden;
+  transition: all 0.1s ease-in-out;
+  transform: scale(1);
+  margin: 0.5em;
+}
+
+.slide-preview:hover, .slide-preview:focus{
+  cursor: pointer; 
+  border: 2px solid lightslategrey;
+  transform: scale(1.1)
+}

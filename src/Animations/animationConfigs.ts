@@ -1,4 +1,4 @@
-import { timings } from "./timings";
+import { timings } from "../constants/timings";
 
 export const animationConfigs = {
   animateOnce: {

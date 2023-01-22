@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimationEventMap } from "../utils";
 import { timings } from "../constants";
 import { Animate } from "./Animate";
 import { AnimateProps } from "./AnimateTypes";
@@ -19,20 +20,20 @@ function getStepDelay(
 export const AnimateSequence = (
   props: AnimateProps & { initialDelay?: number }
 ) => {
-  const {
-    animationConfig = {},
-    delay: delayProp,
-    initialDelay = timings.default,
-  } = props;
+  const { animationConfig = {}, delay: delayProp, initialDelay = 0 } = props;
 
   const { duration } = animationConfig;
 
   const stepDelay = getStepDelay(delayProp, duration);
-  if (Array.isArray(props.children)) {
-    const children = React.Children.map(props.children, (child, i) => {
+
+  const childrenProp = props.children;
+  if (Array.isArray(childrenProp)) {
+    const children = React.Children.map(childrenProp, (child, i) => {
       const delay = initialDelay + i * stepDelay;
+      const events = getEventConfig(i, childrenProp.length);
+
       return (
-        <Animate {...props} delay={delay}>
+        <Animate {...props} delay={delay} events={events}>
           {child}
         </Animate>
       );
@@ -40,4 +41,12 @@ export const AnimateSequence = (
     return <>{children}</>;
   }
   return <Animate {...props} />;
+};
+
+const getEventConfig = (i: number, total: number): AnimationEventMap => {
+  return {
+    started: i === 0,
+    canceled: true,
+    finished: i === total - 1,
+  };
 };

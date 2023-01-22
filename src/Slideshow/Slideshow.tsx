@@ -6,14 +6,20 @@ import {
 } from "../utils/useSlideNavigation";
 import { slideTransitions } from "../constants";
 import DummySlide from "./DummySlide";
-import "./Slideshow.css";
-import { animationConfigs } from "../constants/animationConfigs";
+import { animationConfigs } from "../Animations/animationConfigs";
 import { resolveNextSlide } from "../utils/resolveNextSlide";
+import { Slide } from "../Slide/";
+import { useScaledContent } from "../utils";
+import {
+  AnimationEventsProvider,
+  animationMessageBroker,
+} from "../AnimationEvents";
+import "./Slideshow.css";
 
 export type SlideTransitionStyle = "fade" | "slide";
 
 export type SlideshowProps = {
-  slides: React.FC<{ slideNumber?: number }>[];
+  slides: Slide[];
   width?: number;
   height?: number;
   slideNumber?: number;
@@ -72,7 +78,7 @@ export const Slideshow = (props: SlideshowProps) => {
   const scaledWrapper = createRef<HTMLDivElement>();
   const scaledContent = createRef<HTMLDivElement>();
   const activeSlideRef = createRef<HTMLDivElement>();
-  const previousSlideNumber = useRef<number>();
+
   const [slideEnterAnimation, setSlideEnterAnimation] =
     useState<SlideAnimation>({
       style: slideTransitions.fadeIn,
@@ -80,6 +86,11 @@ export const Slideshow = (props: SlideshowProps) => {
     });
 
   const isFullscreenRef = useRef<boolean>(fullscreenProp);
+
+  const animationEventsChannel = useMemo(
+    () => animationMessageBroker(true),
+    []
+  );
 
   const ActiveSlide = useMemo(
     () => () => {
@@ -105,13 +116,17 @@ export const Slideshow = (props: SlideshowProps) => {
         exitAnimationStyle,
         animationConfigs.animateOnce
       );
+
+      animation.onfinish = () => {
+        animationEventsChannel.sendAnimationEvent("slide-exit", "finished");
+      };
+
       const nextSlideNumber = resolveNextSlide(
         slides.length,
         slideNumber,
         action
       );
       animation.addEventListener("finish", () => {
-        previousSlideNumber.current = slideNumber;
         const enterAnimationStyle = chooseSlideEnterAnimation(
           transitionStyle,
           action
@@ -129,37 +144,20 @@ export const Slideshow = (props: SlideshowProps) => {
 
   useSlideNavigation(scaledWrapper, fullscreenProp, handleSlideCommands);
 
+  useScaledContent(scaledContent, scaledWrapper);
+
   useEffect(() => {
     const { current } = activeSlideRef;
     if (!current) {
       return;
     }
     const { style, options } = slideEnterAnimation;
-    current.animate(style, options);
-  }, [activeSlideRef, slideEnterAnimation]);
+    const animation = current.animate(style, options);
 
-  useEffect(() => {
-    const listener = () => {
-      if (!scaledContent.current || !scaledWrapper.current) {
-        return;
-      }
-      scaledContent.current.style.transform = "scale(1, 1)";
-
-      const { width: cw, height: ch } =
-        scaledContent.current.getBoundingClientRect();
-      const { width: ww, height: wh } =
-        scaledWrapper.current.getBoundingClientRect();
-      const scaleAmtX = Math.min(ww / cw, wh / ch);
-
-      scaledContent.current.style.transform = `scale(${scaleAmtX}) `;
+    animation.onfinish = () => {
+      animationEventsChannel.sendAnimationEvent("slide-enter", "finished");
     };
-    listener();
-    window.addEventListener("resize", listener);
-
-    return () => {
-      window.removeEventListener("resize", listener);
-    };
-  }, [scaledWrapper, scaledContent]);
+  }, [activeSlideRef, animationEventsChannel, slideEnterAnimation]);
 
   useEffect(() => {
     if (!scaledWrapper.current) {
@@ -194,33 +192,35 @@ export const Slideshow = (props: SlideshowProps) => {
   const pixelHeight = `${height}px`;
 
   return (
-    <div
-      tabIndex={fullscreenProp ? undefined : 0}
-      role="document"
-      className="react-slideshow-main-container"
-      ref={scaledWrapper}
-    >
-      <div className="react-slideshow-content-aligner">
-        <div
-          ref={scaledContent}
-          className="react-slideshow-content-container"
-          style={{
-            width: pixelWidth,
-            height: pixelHeight,
-          }}
-        >
+    <AnimationEventsProvider value={animationEventsChannel}>
+      <div
+        tabIndex={fullscreenProp ? undefined : 0}
+        role="document"
+        className="react-slideshow-main-container"
+        ref={scaledWrapper}
+      >
+        <div className="react-slideshow-content-aligner">
           <div
-            className="react-slideshow-slide"
+            ref={scaledContent}
+            className="react-slideshow-content-container"
             style={{
-              width,
-              height,
+              width: pixelWidth,
+              height: pixelHeight,
             }}
-            ref={activeSlideRef}
           >
-            <ActiveSlide />
+            <div
+              className="react-slideshow-slide"
+              style={{
+                width,
+                height,
+              }}
+              ref={activeSlideRef}
+            >
+              <ActiveSlide />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </AnimationEventsProvider>
   );
 };

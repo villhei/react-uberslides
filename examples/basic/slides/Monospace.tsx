@@ -9,7 +9,7 @@ const Monospace: React.FC = () => (
     }}
   >
     <h1 style={{ color: "white" }}>Mad hacker presentations</h1>
-    <AnimateSequence delay={timings.fastest}>
+    <AnimateSequence>
       {`PID TTY           TIME CMD
 10977 ttys000    0:00.34 /bin/zsh -il
 36342 ttys000    0:00.39 node /Users/ville/.yarn/bin/yarn.js start:dev
@@ -21,9 +21,7 @@ const Monospace: React.FC = () => (
       `
         .split("\n")
         .map((str, i) => (
-          <span style={{ opacity: 0 }} key={i}>
-            {str}
-          </span>
+          <span key={i}>{str}</span>
         ))}
     </AnimateSequence>
   </MonospaceLayout>

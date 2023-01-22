@@ -1,5 +1,5 @@
 export * from "./Animations";
 export * from "./constants";
-export * from "./Slideshow/Slideshow";
+export * from "./Slideshow/";
 export * from "./Layouts";
 export * from "./utils/";

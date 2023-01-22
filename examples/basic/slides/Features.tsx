@@ -12,15 +12,24 @@ const Features: React.FC = () => {
   return (
     <DefaultLayout>
       <Animate
-        delay={timings.slow}
-        animation={[
-          {
+        startOn={{
+          name: "logo-enter",
+          event: "finished",
+        }}
+        name="background-slide"
+        animation={{
+          initialStyles: {
             backgroundPosition: "0%",
           },
-          {
-            backgroundPosition: "70%",
-          },
-        ]}
+          keyframes: [
+            {
+              backgroundPosition: "0%",
+            },
+            {
+              backgroundPosition: "70%",
+            },
+          ],
+        }}
       >
         <div
           style={{
@@ -28,6 +37,7 @@ const Features: React.FC = () => {
             fontSize: "1.5em",
             overflow: "hidden",
             background: "linear-gradient(110deg, white 60%, #5F819D 60%)",
+            backgroundPosition: "70%",
             backgroundSize: "200% 200%",
             width: "100%",
             height: "100%",
@@ -35,15 +45,15 @@ const Features: React.FC = () => {
         >
           <h1>
             <AnimateSequence
+              name="logo-enter"
               animation={animations.fallIn}
-              delay={timings.fastest}
               animationConfig={{
                 ...animationConfigs.animateOnce,
-                duration: timings.default,
+                duration: timings.fastest,
               }}
             >
               {"FEATURES".split("").map((str, i) => (
-                <span key={i} style={{ opacity: 0, display: "inline-block" }}>
+                <span key={i} style={{ display: "inline-block" }}>
                   {str}
                 </span>
               ))}
@@ -51,14 +61,15 @@ const Features: React.FC = () => {
           </h1>
           <ul>
             <AnimateSequence
-              initialDelay={
-                timings.default + timings.fastest * "FEATURES".length + 1
-              }
+              startOn={{
+                name: "background-slide",
+                event: "finished",
+              }}
             >
-              <li style={{ opacity: 0 }}>Embed anywhere</li>
-              <li style={{ opacity: 0 }}>Mobile support</li>
-              <li style={{ opacity: 0 }}>Animations</li>
-              <li style={{ opacity: 0 }}>Slide recipes</li>
+              <li>Embed anywhere</li>
+              <li>Mobile support</li>
+              <li>Animations</li>
+              <li>Slide recipes</li>
             </AnimateSequence>
           </ul>
         </div>

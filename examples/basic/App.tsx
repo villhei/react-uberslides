@@ -1,4 +1,9 @@
-import { Slideshow, SlideTransitionStyle, useToggle } from "react-slideshow";
+import {
+  SlidePreview,
+  Slideshow,
+  SlideTransitionStyle,
+  useToggle,
+} from "react-slideshow";
 import {
   createHashRouter,
   createRoutesFromElements,
@@ -61,9 +66,9 @@ const SlideView = () => {
       <div
         style={{
           flex: 1,
-          fontSize: "4em",
           overflow: "hidden",
           backgroundColor: "black",
+          padding: "0.5em 0em",
         }}
       >
         <Slideshow
@@ -76,6 +81,26 @@ const SlideView = () => {
           onExitFullscreen={() => setFullscreen(false)}
           transitionStyle={animationStyle}
         />
+      </div>
+      <div
+        id="slides"
+        style={{
+          display: "flex",
+          width: "100%",
+          marginTop: "1em",
+          overflow: "auto",
+        }}
+      >
+        {slides.map((Slide, i) => (
+          <div
+            className="slide-preview"
+            tabIndex={0}
+            key={i}
+            onClick={() => changeSlide(i)}
+          >
+            <SlidePreview slide={Slide} slideNumber={i + 1} />
+          </div>
+        ))}
       </div>
     </div>
   );

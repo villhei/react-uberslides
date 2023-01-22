@@ -11,7 +11,7 @@ const OtherSlide: React.FC = () => (
   >
     <h1>Hello!</h1>
     <Animate animation={animations.fallIn}>
-      <div style={{ opacity: 0 }}>
+      <div>
         <h3>Use the arrows or swipe to navigate</h3>
       </div>
     </Animate>
