@@ -38,8 +38,25 @@ const fallIn: ReactSlidesAnimation = {
   ],
 };
 
+const flipColors: ReactSlidesAnimation = {
+  initialStyles: { color: "black", opacity: 0 },
+  keyframes: [
+    {
+      opacity: 0,
+      color: "black",
+    },
+    {
+      opacity: 1,
+      offset: 0.5,
+      color: "black",
+    },
+    { color: "white", offset: 1, opacity: 1 },
+  ],
+};
+
 export const animations: Record<string, ReactSlidesAnimation> = {
   fadeIn,
   fadeOut,
   fallIn,
+  flipColors,
 } as const;

@@ -68,8 +68,8 @@ const Features: React.FC = () => {
             >
               <li>Embed anywhere</li>
               <li>Mobile support</li>
+              <li>Flexible scaling</li>
               <li>Animations</li>
-              <li>Slide recipes</li>
             </AnimateSequence>
           </ul>
         </div>

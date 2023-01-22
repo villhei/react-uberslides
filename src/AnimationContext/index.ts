@@ -1,2 +1,2 @@
-export * from "./AnimationEvents";
+export * from "./AnimationContext";
 export * from "./animationMessage";

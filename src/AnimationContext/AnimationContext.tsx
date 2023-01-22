@@ -1,16 +1,22 @@
-import { PropsWithChildren, useContext, createContext } from "react";
+import { PropsWithChildren, useContext, createContext, useMemo } from "react";
 import { AnimationEvent, AnimationMessageHandler } from "./animationMessage";
 
-type AnimationContext = {
+type AnimationMessageBroker = {
   sendAnimationEvent: (name: string, event: AnimationEvent) => void;
   subscribe: (cb: AnimationMessageHandler) => void;
   unsubscribe: (cb: AnimationMessageHandler) => void;
-  animationsEnabled: boolean;
 };
 
-export const animationMessageBroker = (
-  animationsEnabled: boolean
-): AnimationContext => {
+type WindowDimensions = {
+  width: number;
+  height: number;
+};
+type AnimationContext = AnimationMessageBroker & {
+  animationsEnabled: boolean;
+  dimensions: WindowDimensions;
+};
+
+export const animationMessageBroker = (): AnimationMessageBroker => {
   const listeners: AnimationMessageHandler[] = [];
 
   const subscribe = (cb: AnimationMessageHandler) => {
@@ -38,15 +44,10 @@ export const animationMessageBroker = (
     sendAnimationEvent,
     subscribe,
     unsubscribe,
-    animationsEnabled,
   };
 };
 
-const AnimationEvents = createContext<AnimationContext>(
-  animationMessageBroker(false)
-);
-
-export const AnimationEventsProvider = (
+export const AnimationContextProvider = (
   props: PropsWithChildren<{ value: AnimationContext }>
 ) => {
   const { Provider } = AnimationEvents;
@@ -54,6 +55,31 @@ export const AnimationEventsProvider = (
   return <Provider {...props} />;
 };
 
-export const useAnimationEventsChannel = () => {
+const createAnimationContext = (
+  animationsEnabled: boolean,
+  dimensions: WindowDimensions
+) => ({
+  ...animationMessageBroker(),
+  dimensions,
+  animationsEnabled,
+});
+
+export const useAnimationContextDefaults = (
+  animationsEnabled: boolean,
+  dimensions: WindowDimensions
+): AnimationContext => {
+  const animationContext = useMemo(
+    () => createAnimationContext(animationsEnabled, dimensions),
+    [animationsEnabled, dimensions]
+  );
+
+  return animationContext;
+};
+
+const AnimationEvents = createContext<AnimationContext>(
+  createAnimationContext(false, { width: 1920, height: 1080 })
+);
+
+export const useAnimationContext = () => {
   return useContext(AnimationEvents);
 };

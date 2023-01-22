@@ -1,5 +1,5 @@
 import { CSSProperties, ReactElement } from "react";
-import { AnimationMessage } from "../AnimationEvents";
+import { AnimationMessage } from "../AnimationContext";
 import { ReactSlidesAnimation } from "./animations";
 import { AnimationEventMap } from "../utils";
 

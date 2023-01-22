@@ -3,15 +3,22 @@ import { CenteredLayout, DefaultLayout } from "react-slideshow";
 
 const TestSlide: React.FC = () => (
   <CenteredLayout>
-    <h1 style={{ fontSize: 100 }}> 100px font</h1>
     <div
       style={{
-        width: 640,
-        height: 480,
-        border: "5px solid black",
+        position: "relative",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
       }}
     >
-      <h1 style={{ fontSize: 100 }}>640x480 box</h1>
+      <div
+        style={{
+          border: "2px solid black",
+          minWidth: "100%",
+          display: "inline-block",
+          alignSelf: "center",
+        }}
+      ></div>
     </div>
   </CenteredLayout>
 );

@@ -3,8 +3,8 @@ import {
   AnimationEvent,
   AnimationMessage,
   AnimationMessageHandler,
-  useAnimationEventsChannel,
-} from "../AnimationEvents";
+  useAnimationContext,
+} from "../AnimationContext";
 import useIntersectionObserver from "./useIntersectionObserver";
 
 export type AnimationEventMap = { [event in AnimationEvent]: boolean };
@@ -29,7 +29,7 @@ export const useAnimation = <T extends HTMLElement>(
 ) => {
   const { ref, hasIntersected } = useIntersectionObserver<T>();
 
-  const channel = useAnimationEventsChannel();
+  const channel = useAnimationContext();
   useEffect(() => {
     const node = ref.current;
 

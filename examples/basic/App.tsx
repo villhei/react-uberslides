@@ -17,12 +17,18 @@ import Hello from "./slides/Hello";
 import Introduction from "./slides/Introduction";
 import Features from "./slides/Features";
 
-import Monospace from "./slides/Monospace";
+import MadHackerPresentations from "./slides/MadHackerPresentations";
 
 import "./style.css";
 import { useState } from "react";
 
-const slides = [Hello, Introduction, Features, Monospace, TestSlide];
+const slides = [
+  Hello,
+  Introduction,
+  Features,
+  MadHackerPresentations,
+  TestSlide,
+];
 
 const SlideView = () => {
   const { slideID = "0" } = useParams();
@@ -72,8 +78,6 @@ const SlideView = () => {
         }}
       >
         <Slideshow
-          width={1920}
-          height={1080}
           slides={slides}
           slideNumber={slideNumber}
           onRequestSlide={changeSlide}

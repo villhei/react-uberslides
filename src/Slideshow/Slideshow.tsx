@@ -11,9 +11,10 @@ import { resolveNextSlide } from "../utils/resolveNextSlide";
 import { Slide } from "../Slide/";
 import { useScaledContent } from "../utils";
 import {
-  AnimationEventsProvider,
+  AnimationContextProvider,
   animationMessageBroker,
-} from "../AnimationEvents";
+  useAnimationContextDefaults,
+} from "../AnimationContext";
 import "./Slideshow.css";
 
 export type SlideTransitionStyle = "fade" | "slide";
@@ -87,10 +88,7 @@ export const Slideshow = (props: SlideshowProps) => {
 
   const isFullscreenRef = useRef<boolean>(fullscreenProp);
 
-  const animationEventsChannel = useMemo(
-    () => animationMessageBroker(true),
-    []
-  );
+  const animationContext = useAnimationContextDefaults(true, { width, height });
 
   const ActiveSlide = useMemo(
     () => () => {
@@ -118,7 +116,7 @@ export const Slideshow = (props: SlideshowProps) => {
       );
 
       animation.onfinish = () => {
-        animationEventsChannel.sendAnimationEvent("slide-exit", "finished");
+        animationContext.sendAnimationEvent("slide-exit", "finished");
       };
 
       const nextSlideNumber = resolveNextSlide(
@@ -155,9 +153,9 @@ export const Slideshow = (props: SlideshowProps) => {
     const animation = current.animate(style, options);
 
     animation.onfinish = () => {
-      animationEventsChannel.sendAnimationEvent("slide-enter", "finished");
+      animationContext.sendAnimationEvent("slide-enter", "finished");
     };
-  }, [activeSlideRef, animationEventsChannel, slideEnterAnimation]);
+  }, [activeSlideRef, animationContext, slideEnterAnimation]);
 
   useEffect(() => {
     if (!scaledWrapper.current) {
@@ -192,7 +190,7 @@ export const Slideshow = (props: SlideshowProps) => {
   const pixelHeight = `${height}px`;
 
   return (
-    <AnimationEventsProvider value={animationEventsChannel}>
+    <AnimationContextProvider value={animationContext}>
       <div
         tabIndex={fullscreenProp ? undefined : 0}
         role="document"
@@ -221,6 +219,6 @@ export const Slideshow = (props: SlideshowProps) => {
           </div>
         </div>
       </div>
-    </AnimationEventsProvider>
+    </AnimationContextProvider>
   );
 };

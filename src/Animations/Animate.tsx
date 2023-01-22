@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactElement } from "react";
-import { useAnimationEventsChannel } from "../AnimationEvents";
+import { useAnimationContext } from "../AnimationContext";
 import { useAnimation, UseAnimationOptions, AnimationEventMap } from "../utils";
 import { AnimateProps } from "./AnimateTypes";
 import { animationConfigs } from "./animationConfigs";
@@ -27,7 +27,7 @@ export const Animate = (props: AnimateProps) => {
     delay,
   };
 
-  const { animationsEnabled } = useAnimationEventsChannel();
+  const { animationsEnabled } = useAnimationContext();
 
   const children = React.Children.map(props.children, (child) => {
     const options: UseAnimationOptions = {
