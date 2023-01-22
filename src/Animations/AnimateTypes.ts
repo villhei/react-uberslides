@@ -13,6 +13,7 @@ export type AnimateProps = {
   animation?: ReactSlidesAnimation;
   animationConfig?: KeyframeAnimationOptions;
   delay?: number;
+  duration?: number;
   name?: string;
   disabled?: boolean;
   startOn?: AnimationMessage;

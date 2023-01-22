@@ -34,7 +34,6 @@ const Features: React.FC = () => {
         <div
           style={{
             padding: "0em 2em",
-            fontSize: "1.5em",
             overflow: "hidden",
             background: "linear-gradient(110deg, white 60%, #5F819D 60%)",
             backgroundPosition: "70%",
@@ -53,7 +52,10 @@ const Features: React.FC = () => {
               }}
             >
               {"FEATURES".split("").map((str, i) => (
-                <span key={i} style={{ display: "inline-block" }}>
+                <span
+                  key={i}
+                  style={{ display: "inline-block", fontSize: "1.2em" }}
+                >
                   {str}
                 </span>
               ))}

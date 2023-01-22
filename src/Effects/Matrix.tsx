@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useMemo } from "react";
+import React, { createRef, useEffect, useMemo, useRef } from "react";
 import { useAnimationContext } from "../AnimationContext";
 
 type MatrixProps = {
@@ -8,7 +8,7 @@ type MatrixProps = {
 
 export const Matrix = React.forwardRef<
   HTMLDivElement,
-  React.PropsWithChildren<MatrixProps>
+  React.HTMLProps<"div"> & MatrixProps
 >((props, ref) => {
   const canvasRef = createRef<HTMLCanvasElement>();
 
@@ -16,48 +16,44 @@ export const Matrix = React.forwardRef<
 
   const { animationsEnabled, dimensions } = useAnimationContext();
 
-  const styles = useMemo(
-    () =>
-      ({
-        absolute: {
-          position: "absolute",
-          width: dimensions.width,
-          height: dimensions.height,
-        },
-        relative: {
-          position: "relative",
-          width: dimensions.width,
-          height: dimensions.height,
-        },
-        absoluteFlex: {
-          position: "absolute",
-          display: "flex",
-          width: dimensions.width,
-          height: dimensions.height,
-        },
-      } as const),
-    [dimensions]
+  const initialValues = useMemo(() => {
+    const fontMargin = 0.2;
+    const fontSpace = fontSize * (1 + fontMargin);
+    const { width, height } = dimensions;
+    const columnCount = Math.floor(width / fontSpace) + 1;
+    const rowCount = Math.floor(height / fontSpace);
+
+    return {
+      fontSpace,
+      width,
+      height,
+      columnCount,
+      rowCount,
+      color,
+      fontSize,
+    };
+  }, [dimensions, color, fontSize]);
+
+  const drawCursorRef = useRef(
+    Array(initialValues.columnCount)
+      .fill(0)
+      .map(
+        () =>
+          initialValues.fontSpace +
+          Math.floor(Math.random() * initialValues.rowCount - 1) *
+            initialValues.fontSpace
+      )
   );
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    const { current: cursorY } = drawCursorRef;
     if (!canvas) {
       return;
     }
     const ctx = canvas.getContext("2d")!;
 
-    const fontMargin = 0.2;
-    const fontSpace = fontSize * (1 + fontMargin);
-    const width = (canvas.width = document.body.offsetWidth);
-    const height = (canvas.height = document.body.offsetHeight);
-    const columnCount = Math.floor(width / fontSpace) + 1;
-    const rowCount = Math.floor(height / fontSpace);
-
-    const cursorY = Array(columnCount)
-      .fill(0)
-      .map(
-        () => fontSpace + Math.floor(Math.random() * rowCount - 1) * fontSpace
-      );
+    const { fontSpace, width, height, rowCount } = initialValues;
 
     const lastRow = height / fontSpace;
 
@@ -65,7 +61,7 @@ export const Matrix = React.forwardRef<
     ctx.fillRect(0, 0, width, height);
 
     function matrix() {
-      ctx.fillStyle = "#0002";
+      ctx.fillStyle = "#0003";
       ctx.fillRect(0, 0, width, height);
 
       ctx.fillStyle = color;
@@ -108,12 +104,15 @@ export const Matrix = React.forwardRef<
     return () => {
       isRunning = false;
     };
-  }, [canvasRef, animationsEnabled, color, fontSize]);
+  }, [canvasRef, animationsEnabled, initialValues]);
 
   return (
-    <div ref={ref} style={styles.relative}>
-      <canvas ref={canvasRef} style={styles.absolute} />
-      <div style={styles.absoluteFlex}>{props.children}</div>
+    <div ref={ref} style={{ ...props.style, ...dimensions }}>
+      <canvas
+        ref={canvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+      />
     </div>
   );
 });

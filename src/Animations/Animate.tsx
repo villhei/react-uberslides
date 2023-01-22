@@ -40,12 +40,12 @@ export const Animate = (props: AnimateProps) => {
 
     if (typeof child === "string") {
       if (!animationsEnabled || disabled) {
-        return { child };
+        return child;
       }
       return (
-        <div style={{ display: "inline-block" }} ref={ref as any}>
+        <span style={{ display: "inline-block" }} ref={ref as any}>
           {child}
-        </div>
+        </span>
       );
     }
     if (React.isValidElement<{ style: CSSProperties }>(child)) {

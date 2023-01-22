@@ -1,6 +1,6 @@
 export type ReactSlidesAnimation = {
   keyframes: Keyframe[];
-  initialStyles: React.CSSProperties;
+  initialStyles?: React.CSSProperties;
 };
 
 const fadeIn: ReactSlidesAnimation = {
@@ -39,18 +39,13 @@ const fallIn: ReactSlidesAnimation = {
 };
 
 const flipColors: ReactSlidesAnimation = {
-  initialStyles: { color: "black", opacity: 0 },
+  initialStyles: { color: "black" },
   keyframes: [
     {
-      opacity: 0,
+      offset: 0,
       color: "black",
     },
-    {
-      opacity: 1,
-      offset: 0.5,
-      color: "black",
-    },
-    { color: "white", offset: 1, opacity: 1 },
+    { color: "white", offset: 1 },
   ],
 };
 
