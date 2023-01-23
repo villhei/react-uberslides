@@ -49,9 +49,21 @@ const flipColors: ReactSlidesAnimation = {
   ],
 };
 
+const growVertical: ReactSlidesAnimation = {
+  initialStyles: { transform: "scale(0, 1)" },
+  keyframes: [
+    {
+      offset: 0,
+      transform: "scale(0, 1)",
+    },
+    { transform: "scale(1, 1)", offset: 1 },
+  ],
+};
+
 export const animations: Record<string, ReactSlidesAnimation> = {
   fadeIn,
   fadeOut,
   fallIn,
   flipColors,
+  growVertical,
 } as const;

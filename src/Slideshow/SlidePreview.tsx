@@ -1,12 +1,16 @@
 import { createRef } from "react";
 import { useScaledContent } from "../utils";
 import { Slide } from "../Slide";
+import {
+  useCreateAnimationContext,
+  AnimationContextProvider,
+} from "../AnimationContext";
 
 type SlidePreviewProps = {
   slide: Slide;
   slideNumber: number;
-  width?: string;
-  height?: string;
+  width?: number;
+  height?: number;
 };
 
 export const SlidePreview = (props: SlidePreviewProps) => {
@@ -22,31 +26,38 @@ export const SlidePreview = (props: SlidePreviewProps) => {
 
   useScaledContent(scaledContent, scaledWrapper);
 
+  const animationContext = useCreateAnimationContext(false, {
+    width,
+    height,
+  });
+
   return (
-    <div
-      className="react-uberslides-slideshow-preview-container"
-      ref={scaledWrapper}
-    >
-      <div className="react-uberslides-slideshow-content-aligner">
-        <div
-          className="react-uberslides-slideshow-content-container"
-          ref={scaledContent}
-          style={{
-            width,
-            height,
-          }}
-        >
+    <AnimationContextProvider value={animationContext}>
+      <div
+        className="react-uberslides-slideshow-preview-container"
+        ref={scaledWrapper}
+      >
+        <div className="react-uberslides-slideshow-content-aligner">
           <div
-            className="react-uberslides-slideshow-slide"
+            className="react-uberslides-slideshow-content-container"
+            ref={scaledContent}
             style={{
               width,
               height,
             }}
           >
-            <SlideContent slideNumber={slideNumber} />
+            <div
+              className="react-uberslides-slideshow-slide"
+              style={{
+                width,
+                height,
+              }}
+            >
+              <SlideContent slideNumber={slideNumber} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </AnimationContextProvider>
   );
 };

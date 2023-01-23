@@ -4,12 +4,11 @@ import { Animate, CenteredLayout, animations } from "react-uberslides";
 const OtherSlide: React.FC = () => (
   <CenteredLayout
     style={{
-      fontSize: "1.5em",
       color: "white",
       backgroundColor: "black",
     }}
   >
-    <h1>Hello!</h1>
+    <h1 style={{ fontSize: "4em" }}>Hello!</h1>
     <Animate animation={animations.fallIn}>
       <div>
         <h3>Use the arrows or swipe to navigate</h3>

@@ -4,6 +4,7 @@ import { useAnimationContext } from "../AnimationContext";
 type MatrixProps = {
   color?: string;
   fontSize?: number;
+  dimensions?: { width: number; height: number };
 };
 
 export const Matrix = React.forwardRef<
@@ -12,10 +13,12 @@ export const Matrix = React.forwardRef<
 >((props, ref) => {
   const canvasRef = createRef<HTMLCanvasElement>();
 
-  const { color = "#0f0", fontSize = 35 } = props;
+  const { color = "#0f0", fontSize = 35, dimensions: dimensionsProps } = props;
 
-  const { animationsEnabled, dimensions } = useAnimationContext();
+  const { animationsEnabled, dimensions: contextDimensions } =
+    useAnimationContext();
 
+  const dimensions = dimensionsProps ?? contextDimensions;
   const initialValues = useMemo(() => {
     const fontMargin = 0.2;
     const fontSpace = fontSize * (1 + fontMargin);
@@ -32,7 +35,7 @@ export const Matrix = React.forwardRef<
       color,
       fontSize,
     };
-  }, [dimensions, color, fontSize]);
+  }, [dimensionsProps, dimensions, color, fontSize]);
 
   const drawCursorRef = useRef(
     Array(initialValues.columnCount)

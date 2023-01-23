@@ -55,11 +55,10 @@ const MadHackerPresentations: React.FC = () => {
         </div>
       </Animate>
       <CenteredLayout style={styles.layout}>
-        <AnimateSequence
-          startOn={events.matrix}
+        <Animate
           animation={animations.flipColors}
-          animationConfig={animationConfigs.animateOnceSlowly}
-          name={events.headline.name}
+          startOn={{ name: events.matrix.name, event: "started" }}
+          delay={timings.slow}
         >
           <h1>
             Create{" "}
@@ -79,7 +78,14 @@ const MadHackerPresentations: React.FC = () => {
             </Animate>{" "}
             effects
           </h1>
-
+        </Animate>
+        <AnimateSequence
+          startOn={events.matrix}
+          animation={animations.flipColors}
+          animationConfig={animationConfigs.animateOnceSlowly}
+          name={events.headline.name}
+          initialDelay={timings.slowest}
+        >
           <h2>Combine HTML + CSS + JS</h2>
           <h3>...and your ideas</h3>
         </AnimateSequence>

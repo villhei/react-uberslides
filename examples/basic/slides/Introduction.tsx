@@ -39,7 +39,7 @@ const Introduction: React.FC = () => {
         <div
           style={{
             width: "calc(100% + 2em)",
-            marginLeft: "-3em",
+            marginLeft: "-2em",
             color: "white",
             backgroundColor: "black",
             padding: "1.5em 4em",

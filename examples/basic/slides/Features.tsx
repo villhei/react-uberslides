@@ -10,7 +10,7 @@ import {
 
 const Features: React.FC = () => {
   return (
-    <DefaultLayout>
+    <DefaultLayout style={{ fontSize: "1.2em" }}>
       <Animate
         startOn={{
           name: "logo-enter",

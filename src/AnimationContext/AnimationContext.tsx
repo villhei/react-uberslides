@@ -64,7 +64,7 @@ const createAnimationContext = (
   animationsEnabled,
 });
 
-export const useAnimationContextDefaults = (
+export const useCreateAnimationContext = (
   animationsEnabled: boolean,
   dimensions: WindowDimensions
 ): AnimationContext => {

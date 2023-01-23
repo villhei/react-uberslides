@@ -12,8 +12,7 @@ import { Slide } from "../Slide/";
 import { useScaledContent } from "../utils";
 import {
   AnimationContextProvider,
-  animationMessageBroker,
-  useAnimationContextDefaults,
+  useCreateAnimationContext,
 } from "../AnimationContext";
 import "./Slideshow.css";
 
@@ -88,7 +87,7 @@ export const Slideshow = (props: SlideshowProps) => {
 
   const isFullscreenRef = useRef<boolean>(fullscreenProp);
 
-  const animationContext = useAnimationContextDefaults(true, { width, height });
+  const animationContext = useCreateAnimationContext(true, { width, height });
 
   const ActiveSlide = useMemo(
     () => () => {
@@ -155,7 +154,7 @@ export const Slideshow = (props: SlideshowProps) => {
     animation.onfinish = () => {
       animationContext.sendAnimationEvent("slide-enter", "finished");
     };
-  }, [activeSlideRef, animationContext, slideEnterAnimation]);
+  }, [activeSlideRef.current, animationContext, slideEnterAnimation]);
 
   useEffect(() => {
     if (!scaledWrapper.current) {
