@@ -1,5 +1,5 @@
 import React from "react";
-import { Animate, CenteredLayout, animations } from "react-slideshow";
+import { Animate, CenteredLayout, animations } from "react-uberslides";
 
 const OtherSlide: React.FC = () => (
   <CenteredLayout

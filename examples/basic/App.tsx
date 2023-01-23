@@ -1,9 +1,10 @@
+import React, { useState } from "react";
 import {
   SlidePreview,
   Slideshow,
   SlideTransitionStyle,
   useToggle,
-} from "react-slideshow";
+} from "react-uberslides";
 import {
   createHashRouter,
   createRoutesFromElements,
@@ -20,7 +21,6 @@ import Features from "./slides/Features";
 import MadHackerPresentations from "./slides/MadHackerPresentations";
 
 import "./style.css";
-import { useState } from "react";
 
 const slides = [
   Hello,

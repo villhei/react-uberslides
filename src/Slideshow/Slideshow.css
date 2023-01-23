@@ -1,4 +1,4 @@
-.react-slideshow-main-container {
+.react-uberslides-slideshow-main-container {
     display: flex;
     width: 100%;
     height: 100%;
@@ -8,7 +8,7 @@
     background-color: black;
 }
 
-.react-slideshow-preview-container {
+.react-uberslides-slideshow-preview-container {
     display: flex;
     width: 100%;
     height: 100%;
@@ -20,7 +20,7 @@
     user-select: none;
 }
 
-.react-slideshow-content-aligner {
+.react-uberslides-slideshow-content-aligner {
     display: flex;
     flex: 1 1;
     overflow: hidden;
@@ -29,11 +29,11 @@
     z-index: -1;
 }
 
-.react-slideshow-content-container {
+.react-uberslides-slideshow-content-container {
     background-color: black;
 }
 
-.react-slideshow-slide {
+.react-uberslides-slideshow-slide {
     display: flex;
     font-size: 4em;
 }

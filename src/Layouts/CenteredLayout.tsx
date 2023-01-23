@@ -16,7 +16,7 @@ export const CenteredLayout = (props: CenteredLayoutProps) => {
         flexDirection: "column",
         ...style,
       }}
-      className="react-slideshow-layout-centered"
+      className="react-uberslides-slideshow-layout-centered"
       {...rest}
     />
   );

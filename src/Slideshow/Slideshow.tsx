@@ -194,20 +194,20 @@ export const Slideshow = (props: SlideshowProps) => {
       <div
         tabIndex={fullscreenProp ? undefined : 0}
         role="document"
-        className="react-slideshow-main-container"
+        className="react-uberslides-slideshow-main-container"
         ref={scaledWrapper}
       >
-        <div className="react-slideshow-content-aligner">
+        <div className="react-uberslides-slideshow-content-aligner">
           <div
             ref={scaledContent}
-            className="react-slideshow-content-container"
+            className="react-uberslides-slideshow-content-container"
             style={{
               width: pixelWidth,
               height: pixelHeight,
             }}
           >
             <div
-              className="react-slideshow-slide"
+              className="react-uberslides-slideshow-slide"
               style={{
                 width,
                 height,

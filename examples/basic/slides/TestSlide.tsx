@@ -1,5 +1,5 @@
 import React from "react";
-import { Animate, DefaultLayout } from "react-slideshow";
+import { Animate, DefaultLayout } from "react-uberslides";
 
 const TestSlide: React.FC = () => (
   <DefaultLayout
@@ -13,7 +13,7 @@ const TestSlide: React.FC = () => (
     <ul>
       <li>
         <pre style={{ display: "inline-block", margin: 0, color: "red" }}>
-          react-slides
+          react-uberslides
         </pre>{" "}
         enforces a given aspect ratio
       </li>

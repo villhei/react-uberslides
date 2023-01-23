@@ -8,7 +8,7 @@ import {
   DefaultLayout,
   Matrix,
   timings,
-} from "react-slideshow";
+} from "react-uberslides";
 
 const styles = {
   layout: {

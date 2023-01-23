@@ -4,7 +4,7 @@ import {
   Animate,
   timings,
   ReactSlidesAnimation,
-} from "react-slideshow";
+} from "react-uberslides";
 
 const backgroundExtend: ReactSlidesAnimation = {
   initialStyles: {

@@ -6,7 +6,7 @@ import {
   animations,
   timings,
   animationConfigs,
-} from "react-slideshow";
+} from "react-uberslides";
 
 const Features: React.FC = () => {
   return (

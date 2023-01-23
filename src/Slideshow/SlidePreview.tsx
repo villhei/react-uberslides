@@ -23,10 +23,13 @@ export const SlidePreview = (props: SlidePreviewProps) => {
   useScaledContent(scaledContent, scaledWrapper);
 
   return (
-    <div className="react-slideshow-preview-container" ref={scaledWrapper}>
-      <div className="react-slideshow-content-aligner">
+    <div
+      className="react-uberslides-slideshow-preview-container"
+      ref={scaledWrapper}
+    >
+      <div className="react-uberslides-slideshow-content-aligner">
         <div
-          className="react-slideshow-content-container"
+          className="react-uberslides-slideshow-content-container"
           ref={scaledContent}
           style={{
             width,
@@ -34,7 +37,7 @@ export const SlidePreview = (props: SlidePreviewProps) => {
           }}
         >
           <div
-            className="react-slideshow-slide"
+            className="react-uberslides-slideshow-slide"
             style={{
               width,
               height,
