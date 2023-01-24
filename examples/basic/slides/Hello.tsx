@@ -1,7 +1,7 @@
 import React from "react";
 import { Animate, CenteredLayout, animations } from "react-uberslides";
 
-const OtherSlide: React.FC = () => (
+const Hello: React.FC = () => (
   <CenteredLayout
     style={{
       color: "white",
@@ -17,4 +17,4 @@ const OtherSlide: React.FC = () => (
   </CenteredLayout>
 );
 
-export default OtherSlide;
+export default Hello;

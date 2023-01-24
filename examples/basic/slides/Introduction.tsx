@@ -35,7 +35,11 @@ const Introduction: React.FC = () => {
         padding: "0em 2em",
       }}
     >
-      <Animate name="background-transition" animation={backgroundExtend}>
+      <Animate
+        name="background-transition"
+        animation={backgroundExtend}
+        duration={timings.slowest}
+      >
         <div
           style={{
             width: "calc(100% + 2em)",

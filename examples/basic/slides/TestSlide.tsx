@@ -35,11 +35,12 @@ const TestSlide = () => {
             background: "black",
             width: "100%",
             height: "0.25em",
-            marginBottom: "1em",
+            minHeight: "0.25em",
+            marginBottom: "0.5em",
           }}
         />
       </Animate>
-      <ul>
+      <ul style={{ margin: "0.3em" }}>
         <AnimateSequence
           startOn={events.border}
           name={events.bulletPoints.name}
@@ -58,14 +59,17 @@ const TestSlide = () => {
       </ul>
       <Animate startOn={events.bulletPoints} delay={timings.slow}>
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Box style={{ width: 400, height: 100, border: "5px solid black" }}>
-            400 x 100
-          </Box>
-          <Box style={{ width: 400, height: 200, border: "5px solid black" }}>
-            400 x 200
-          </Box>
-          <Box style={{ width: 400, height: 300, border: "5px solid black" }}>
-            400 x 300
+          <Box
+            style={{
+              width: 1920,
+              height: 200,
+              border: "5px solid black",
+              margin: "0 -2em",
+              color: "white",
+              backgroundColor: "rgb(19, 66, 102, 0.8)",
+            }}
+          >
+            This box is 1920 x 200 in slide pixels
           </Box>
         </div>
       </Animate>

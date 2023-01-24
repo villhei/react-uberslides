@@ -1,4 +1,5 @@
 import React from "react";
+import { joinClassName } from "../utils/joinClassName";
 
 export type LayoutProps = {
   backgroundColor?: string;
@@ -9,26 +10,13 @@ export type LayoutProps = {
 } & React.HTMLProps<"div">;
 
 export const DefaultLayout = (props: LayoutProps) => {
-  const {
-    className,
-    flex,
-    width = "100%",
-    height = "100%",
-    backgroundColor = "white",
-    children,
-    style = {},
-  } = props;
+  const { className, children, style = {} } = props;
   return (
     <div
       style={{
-        display: flex ? "flex" : undefined,
-        width,
-        height,
-        overflow: "hidden",
-        backgroundColor,
         ...style,
       }}
-      className={className}
+      className={joinClassName("react-uberslides-layout-default", className)}
     >
       {children}
     </div>

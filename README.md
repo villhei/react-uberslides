@@ -14,7 +14,20 @@ See [Examples](/examples/basic/)
 
 ## Running in development
 
+Install dependencies
+
 ```
 yarn
-yarn start:dev
+```
+
+Run the demo from `examples/basic`
+
+```
+yarn dev
+```
+
+Run the tests
+
+```
+yarn test
 ```

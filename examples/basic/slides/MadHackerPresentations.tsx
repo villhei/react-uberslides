@@ -15,7 +15,6 @@ const styles = {
     position: "absolute",
     backgroundColor: "transparent",
     letterSpacing: "2.5px",
-    fontSize: 60,
     top: 0,
     left: 0,
     color: "white",
@@ -49,6 +48,7 @@ const MadHackerPresentations: React.FC = () => {
           keyframes: [{ maxHeight: "0%" }, { maxHeight: "100%" }],
         }}
         delay={timings.slow}
+        duration={timings.slow}
       >
         <div style={styles.absolute}>
           <Matrix />
@@ -65,23 +65,22 @@ const MadHackerPresentations: React.FC = () => {
             <Animate
               startOn={events.headline}
               animation={{
-                initialStyles: { color: "inherit" },
+                initialStyles: { color: "white" },
                 keyframes: [
                   {
-                    color: "inherit",
+                    color: "white",
                   },
                   { color: "red" },
                 ],
               }}
             >
-              <span>overkill</span>
+              <span style={{ color: "red" }}>overkill</span>
             </Animate>{" "}
             effects
           </h1>
         </Animate>
         <AnimateSequence
           startOn={events.matrix}
-          animation={animations.flipColors}
           animationConfig={animationConfigs.animateOnceSlowly}
           name={events.headline.name}
           initialDelay={timings.slowest}

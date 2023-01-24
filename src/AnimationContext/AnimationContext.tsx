@@ -1,8 +1,12 @@
 import { PropsWithChildren, useContext, createContext, useMemo } from "react";
 import { AnimationEvent, AnimationMessageHandler } from "./animationMessage";
 
+type ReactSlidesSystemEvent = "slide-enter";
 type AnimationMessageBroker = {
-  sendAnimationEvent: (name: string, event: AnimationEvent) => void;
+  sendAnimationEvent: (
+    name: ReactSlidesSystemEvent | string,
+    event: AnimationEvent
+  ) => void;
   subscribe: (cb: AnimationMessageHandler) => void;
   unsubscribe: (cb: AnimationMessageHandler) => void;
 };

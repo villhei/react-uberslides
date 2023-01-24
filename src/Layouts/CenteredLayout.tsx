@@ -1,4 +1,4 @@
-import React from "react";
+import { joinClassName } from "../utils";
 import { DefaultLayout, LayoutProps } from "./DefaultLayout";
 import "./Layout.css";
 
@@ -10,13 +10,9 @@ export const CenteredLayout = (props: CenteredLayoutProps) => {
   return (
     <DefaultLayout
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        flexDirection: "column",
         ...style,
       }}
-      className="react-uberslides-slideshow-layout-centered"
+      className={joinClassName("react-uberslides-layout-centered", className)}
       {...rest}
     />
   );

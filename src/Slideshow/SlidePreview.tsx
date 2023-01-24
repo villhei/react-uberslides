@@ -11,12 +11,14 @@ type SlidePreviewProps = {
   slideNumber: number;
   width?: number;
   height?: number;
+  fontSize?: number | string;
 };
 
 export const SlidePreview = (props: SlidePreviewProps) => {
   const {
     slide: SlideContent,
     slideNumber,
+    fontSize,
     width = 1920,
     height = 1080,
   } = props;
@@ -51,9 +53,10 @@ export const SlidePreview = (props: SlidePreviewProps) => {
               style={{
                 width,
                 height,
+                fontSize,
               }}
             >
-              <SlideContent slideNumber={slideNumber} />
+              <SlideContent slideNumber={slideNumber} fullscreen={false} />
             </div>
           </div>
         </div>

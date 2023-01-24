@@ -19,6 +19,7 @@ import Introduction from "./slides/Introduction";
 import Features from "./slides/Features";
 
 import MadHackerPresentations from "./slides/MadHackerPresentations";
+import ScalingDemo from "./slides/ScalingDemo";
 
 import "./style.css";
 
@@ -28,6 +29,7 @@ const slides = [
   Features,
   MadHackerPresentations,
   TestSlide,
+  ScalingDemo,
 ];
 
 const SlideView = () => {
@@ -78,6 +80,7 @@ const SlideView = () => {
         }}
       >
         <Slideshow
+          fontSize="56px"
           slides={slides}
           slideNumber={slideNumber}
           onRequestSlide={changeSlide}
@@ -102,7 +105,7 @@ const SlideView = () => {
             key={i}
             onClick={() => changeSlide(i)}
           >
-            <SlidePreview slide={Slide} slideNumber={i + 1} />
+            <SlidePreview fontSize={56} slide={Slide} slideNumber={i + 1} />
           </div>
         ))}
       </div>

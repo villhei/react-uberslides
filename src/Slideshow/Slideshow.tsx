@@ -22,11 +22,13 @@ export type SlideshowProps = {
   slides: Slide[];
   width?: number;
   height?: number;
+  fontSize?: number | string;
   slideNumber?: number;
   onRequestSlide: (nextSlideNumber: number) => void;
   fullscreen?: boolean;
   onExitFullscreen?: () => void;
   transitionStyle?: SlideTransitionStyle;
+  disableAnimations?: boolean;
 };
 
 const chooseSlideEnterAnimation = (
@@ -66,11 +68,13 @@ const chooseSlideExitAnimation = (
 export const Slideshow = (props: SlideshowProps) => {
   const {
     slides,
+    fontSize,
     slideNumber = 0,
     onRequestSlide,
     width = 1920,
     height = 1080,
     fullscreen: fullscreenProp = false,
+    disableAnimations = false,
     onExitFullscreen,
     transitionStyle = "fade",
   } = props;
@@ -87,14 +91,22 @@ export const Slideshow = (props: SlideshowProps) => {
 
   const isFullscreenRef = useRef<boolean>(fullscreenProp);
 
-  const animationContext = useCreateAnimationContext(true, { width, height });
+  const animationContext = useCreateAnimationContext(!disableAnimations, {
+    width,
+    height,
+  });
 
   const ActiveSlide = useMemo(
     () => () => {
       const SlideContent = slides[slideNumber] || DummySlide;
-      return <SlideContent slideNumber={slideNumber} />;
+      return (
+        <SlideContent
+          slideNumber={slideNumber}
+          fullscreen={isFullscreenRef.current}
+        />
+      );
     },
-    [slides, slideNumber]
+    [slides, slideNumber, isFullscreenRef]
   );
 
   const handleSlideCommands = useCallback(
@@ -183,7 +195,7 @@ export const Slideshow = (props: SlideshowProps) => {
       };
       document.addEventListener("fullscreenchange", listener);
     }
-  }, [isFullscreenRef, fullscreenProp, onExitFullscreen]);
+  }, [isFullscreenRef, scaledWrapper, fullscreenProp, onExitFullscreen]);
 
   const pixelWidth = `${width}px`;
   const pixelHeight = `${height}px`;
@@ -210,6 +222,7 @@ export const Slideshow = (props: SlideshowProps) => {
               style={{
                 width,
                 height,
+                fontSize,
               }}
               ref={activeSlideRef}
             >

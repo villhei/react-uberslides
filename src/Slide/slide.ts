@@ -1,1 +1,1 @@
-export type Slide = React.FC<{ slideNumber?: number }>;
+export type Slide = React.FC<{ slideNumber: number; fullscreen: boolean }>;

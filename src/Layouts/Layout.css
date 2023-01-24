@@ -1,9 +1,21 @@
-.react-uberslides-slideshow-layout-centered > * {
+.react-uberslides-layout-centered > * {
     margin-top: 0;
     margin-bottom: 0;
 }
 
-.react-uberslides-slideshow-layout-centered {
-    justify-items: space-evenly;
+.react-uberslides-layout-centered {
+    justify-content: space-evenly;
     text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.react-uberslides-layout-default {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex-direction: column;
+    background-color: white;
 }

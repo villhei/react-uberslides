@@ -10,7 +10,6 @@ body {
   align-items: center;
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
-  font-size: 14px;
 }
 
 #app {
@@ -40,4 +39,33 @@ body {
 
  li {
   margin: 0.5em 0;
+}
+
+:root {
+  --demo-grid-size: 128px;
+}
+
+.grid-background {
+  background-color: rgb(19, 66, 102);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.25) 6px, transparent 6px),
+    linear-gradient(90deg, rgba(255,255,255,.25) 6px, transparent 6px);
+  background-size: 128px 128px;
+}
+
+.grid-view > * {
+  text-shadow: rgb(0 0 0) 0px 0px 12px;
+}
+
+button {
+    margin: 0.25em 0;
+    font-size: 1em;
+    padding: 0.3em 1em;
+    background-color: rgba(255, 255, 255, 0.7);
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;    
+}
+
+button:hover {
+  cursor: pointer;
 }

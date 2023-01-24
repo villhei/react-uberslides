@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   AnimationEvent,
   AnimationMessage,
@@ -30,13 +30,20 @@ export const useAnimation = <T extends HTMLElement>(
   const { ref, hasIntersected } = useIntersectionObserver<T>();
 
   const channel = useAnimationContext();
+  const [completed, setCompleted] = useState(false);
   useEffect(() => {
     const node = ref.current;
 
     const { name, disabled, events } = options;
     const startOn = options.startOn ?? defaultOptions.startOn;
 
-    if (!node || !hasIntersected || disabled || !channel.animationsEnabled) {
+    if (
+      !node ||
+      !hasIntersected ||
+      disabled ||
+      !channel.animationsEnabled ||
+      completed
+    ) {
       return;
     }
 
@@ -58,6 +65,10 @@ export const useAnimation = <T extends HTMLElement>(
       if (name) channel.sendAnimationEvent(name, "canceled");
     };
 
+    const completionListener = () => {
+      setCompleted(true);
+    };
+
     const finishListener = () => {
       if (name) channel.sendAnimationEvent(name, "finished");
     };
@@ -68,16 +79,20 @@ export const useAnimation = <T extends HTMLElement>(
 
     if (events.finished) {
       animation.addEventListener("finish", finishListener);
+      animation.addEventListener("finish", completionListener);
     }
     return () => {
       animation.removeEventListener("cancel", cancelListener);
       animation.removeEventListener("finish", finishListener);
+      animation.removeEventListener("finish", completionListener);
+
       animation.cancel();
       channel.unsubscribe(listener);
     };
-  }, [ref, options, channel, hasIntersected]);
+  }, [ref, options, channel, completed, setCompleted, hasIntersected]);
 
   return {
     ref,
+    completed,
   };
 };

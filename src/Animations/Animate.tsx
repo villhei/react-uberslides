@@ -36,7 +36,11 @@ export const Animate = (props: AnimateProps) => {
       startOn,
       events,
     };
-    const { ref } = useAnimation(animation.keyframes, animationConfig, options);
+    const { ref, completed: animationCompleted } = useAnimation(
+      animation.keyframes,
+      animationConfig,
+      options
+    );
 
     if (typeof child === "string") {
       if (!animationsEnabled || disabled) {
@@ -51,7 +55,7 @@ export const Animate = (props: AnimateProps) => {
     if (React.isValidElement<{ style: CSSProperties }>(child)) {
       const style = {
         ...child.props.style,
-        ...(animationsEnabled && !disabled
+        ...(animationsEnabled && !disabled && !animationCompleted
           ? animation.initialStyles
           : undefined),
       };

@@ -10,7 +10,7 @@ import {
 
 const Features: React.FC = () => {
   return (
-    <DefaultLayout style={{ fontSize: "1.2em" }}>
+    <DefaultLayout>
       <Animate
         startOn={{
           name: "logo-enter",
@@ -52,10 +52,7 @@ const Features: React.FC = () => {
               }}
             >
               {"FEATURES".split("").map((str, i) => (
-                <span
-                  key={i}
-                  style={{ display: "inline-block", fontSize: "1.2em" }}
-                >
+                <span key={i} style={{ display: "inline-block" }}>
                   {str}
                 </span>
               ))}
