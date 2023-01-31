@@ -72,7 +72,7 @@ const Introduction: React.FC = () => {
         <ul>
           <li>
             <pre style={{ display: "inline-block", margin: 0, color: "red" }}>
-              react-slides
+              react-uberslides
             </pre>{" "}
             is a slideshow framework
           </li>

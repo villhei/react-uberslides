@@ -65,10 +65,10 @@ const MadHackerPresentations: React.FC = () => {
             <Animate
               startOn={events.headline}
               animation={{
-                initialStyles: { color: "white" },
+                initialStyles: { color: "unset" },
                 keyframes: [
                   {
-                    color: "white",
+                    color: "unset",
                   },
                   { color: "red" },
                 ],
