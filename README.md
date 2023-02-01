@@ -1,8 +1,8 @@
-# React slideshow component `react-slides`
+# React slideshow component `react-uberslides`
 
 This is a wip library project that exposes a small library for displaying aspect ratio locked slideshows.
 
-See [Online Demo](https://villhei.github.io/react-slides/)
+See [Online Demo](https://villhei.github.io/react-uberslides/)
 
 ## Features
 
