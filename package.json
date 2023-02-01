@@ -6,10 +6,10 @@
   ],
   "main": "./dist/react-uberslides.umd.cjs",
   "module": "./dist/react-uberslides.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React slideshow library",
   "scripts": {
-    "postinstall": "cp scripts/pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'Git hooks set'",
+    "setup": "cp scripts/pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'Git hooks set'",
     "clean": "rm -rf docs/* dist*",
     "dev": "cd examples/basic && yarn dev",
     "build:demo": "cd examples/basic && yarn build",

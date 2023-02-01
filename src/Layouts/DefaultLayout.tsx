@@ -2,7 +2,6 @@ import React from "react";
 import { joinClassName } from "../utils/joinClassName";
 
 export type LayoutProps = {
-  backgroundColor?: string;
   className?: string;
   flex?: boolean;
   width?: string;
